@@ -1,3 +1,4 @@
 my_key
-./dist
-/*.egg-info
+dist
+*.egg-info
+.idea
