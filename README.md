@@ -1,12 +1,10 @@
 # StockTrackr
 
----
 This is a basic application that uses alpha_vantages API to pull stock data as well as monitor it real-time.
 
 ----
 ### Installation
 
-----
 You can use pip to download the package directly:
 > pip install StockTrackr
 
@@ -14,7 +12,6 @@ You can use pip to download the package directly:
 
 ### Usage
 
-___
 Use the FX() class to gain access to all methods
 
 >import StockTrackr
