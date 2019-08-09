@@ -18,22 +18,6 @@ except ImportError: # If packages don't exist, install them
 
 class FX:
     def __init__(self):
-        # Define API key (change this to yours)
-        if os.path.exists('my_key'):
-            with open('my_key') as f:
-                key = f.read()
-                self.my_key = key
-        else:
-            print('-'*50)
-            self.my_key = input('What is your API key? ')
-            print('-'*50)
-            with open('my_key', 'w+') as f:
-                f.write(self.my_key)
-
-
-        # This creates a TimeSeries() object and authorizes your API key.
-        # The TimeSeries() object is specific to their package so don't worry about exactly what it is
-        self.ts = TimeSeries(key=self.my_key, output_format='pandas')
 
         # Create all of the directories for .csv (Excel) files to be saved
         if not os.path.exists('./data'):
