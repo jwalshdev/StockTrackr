@@ -5,14 +5,14 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="StockTrackr",
-    version="0.0.5",
+    version="0.1",
     author="Jack Walsh",
     author_email="jwalshdev@gmail.com",
     description="A basic stock data puller/monitor",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/jwalshdev/StockTrackr",
-    download_url="https://github.com/jwalshdev/StockTrackr/archive/0.0.5.tar.gz",
+    download_url="https://github.com/jwalshdev/StockTrackr/archive/0.1.tar.gz",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",

@@ -1,4 +1,4 @@
-my_key
+./StockTrackr/my_key
 dist
 *.egg-info
 .idea
