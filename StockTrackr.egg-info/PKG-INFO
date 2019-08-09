@@ -1,12 +1,12 @@
 Metadata-Version: 2.1
 Name: StockTrackr
-Version: 0.0.4
+Version: 0.0.5
 Summary: A basic stock data puller/monitor
 Home-page: https://github.com/jwalshdev/StockTrackr
 Author: Jack Walsh
 Author-email: jwalshdev@gmail.com
 License: UNKNOWN
-Download-URL: https://github.com/jwalshdev/StockTrackr/archive/0.0.4.tar.gz
+Download-URL: https://github.com/jwalshdev/StockTrackr/archive/0.0.5.tar.gz
 Description: # StockTrackr
         
         This is a basic application that uses alpha_vantages API to pull stock data as well as monitor it real-time.
