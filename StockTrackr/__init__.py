@@ -1,9 +1,7 @@
 # This package handles a lot of stuff that your operating system normally would (creating directories)
 import os
-
+from av_api import get_intraday_data, get_daily_data, get_monthly_data, get_weekly_data
 try:
-    # TimeSeries is the class which will allow us to pull stock information
-    from alpha_vantage.timeseries import TimeSeries
     # This allows us to work with date objects
     from datetime import datetime
     # Allows us to wait
@@ -17,7 +15,8 @@ except ImportError: # If packages don't exist, install them
     from time import sleep
     import pandas as pd
 
-class FX():
+
+class FX:
     def __init__(self):
         # Define API key (change this to yours)
         if os.path.exists('my_key'):
@@ -48,50 +47,22 @@ class FX():
         if not os.path.exists('./data/intra'):
             os.makedirs('./data/intra')
 
-    def get_intradata(self, ticker, interval='1min'):  # If no interval is supplied, use 1 minute
-        # Call the .get_intraday() method with the ticker and interval
-        data, meta_data = self.ts.get_intraday(symbol=ticker, interval=interval, outputsize='full')
-
-        # Use the .to_csv() method from Pandas (If you don't know pandas yet you should look up some stuff on it)
-        # Pandas is how you manipulate the excel files in python (adding new columns, booleans, etc.)
-        data.to_csv(f'./data/intra/{ticker}_{datetime.today().date()}.csv')
-        return data
-
     def monitor_stock(self, ticker):
         print(f'Beginning monitor of stock {ticker}')
         while True:  # Always continue looping
             try:  # The try/except cause it to continue retrying if it fails to get the data the first time
-                data, meta_data = self.ts.get_intraday(symbol=ticker, interval='1min', outputsize='compact')
-                data.reset_index(inplace=True)  # Reset the index (this is relatively unimportant)
+                data = get_intraday_data(ticker, mode='return')
                 data = data.loc[data['date'] == max(data['date'])]  # Select the row of data where the date column is equal to its maximum
 
                 #Fancy print the data... the end and flush parameters are used to overwrite whatever was last printed
-                print(f"Now: {datetime.now().time()} | Time: {data['date'].iloc[0]} | Open: {data['1. open'].iloc[0]} | High: {data['2. high'].iloc[0]} | Low: {data['3. low'].iloc[0]} | Close: {data['4. close'].iloc[0]} | Volume: {data['5. volume'].iloc[0]}", end='\r', flush=True)
+                print(f"Now: {datetime.now().time()} | Time: {data['date'].iloc[0]} | Open: {data['open'].iloc[0]} | High: {data['high'].iloc[0]} | Low: {data['low'].iloc[0]} | Close: {data['close'].iloc[0]} | Volume: {data['volume'].iloc[0]}", end='\r', flush=True)
                 sleep(5)  # Wait 5 seconds after returning data
 
-            except KeyError:  # This catches the error that may arise when no data is returned
-                pass  # This literally means "do nothing"
+            except KeyError as e1:  # This catches the error that may arise when no data is returned
+                print(e)  # This literally means "do nothing"
             except KeyboardInterrupt:  # This catches when you use Command+C to escape the monitor
                 print('Exiting monitoring...')
                 return  # Exit the monitor function
-
-    def get_daily_data(self, ticker):
-        # Call the get_daily() function on the ticker
-        data, meta_data = self.ts.get_daily(ticker, outputsize='full')
-
-        # Save the DataFrame
-        data.to_csv(f'./data/daily/{ticker}_daily_data.csv')
-        return data
-
-    def get_weekly_data(self, ticker):  # Exact same as get_daily_data()
-        data, meta_data = self.ts.get_weekly(ticker)
-        data.to_csv(f'./data/weekly/{ticker}_weekly_data.csv')
-        return data
-
-    def get_monthly_data(self, ticker):  # Exact same as get_daily_data()
-        data, meta_data = self.ts.get_monthly(ticker)
-        data.to_csv(f'./data/monthly/{ticker}_monthly_data.csv')
-        return data
 
     def command_loop(self, response):
         def pull_data():
@@ -107,7 +78,7 @@ class FX():
                     tickers.append(r)
 
             # This is more advanced (I just learned you could do this) but its a list of functions so we can call them all
-            fucntions = [self.get_intradata, self.get_daily_data, self.get_monthly_data, self.get_weekly_data]
+            fucntions = [get_intraday_data, get_daily_data, get_monthly_data, get_weekly_data]
 
             for t in tickers:  # Cycle through the tickers and get data for all of them
                 for f in fucntions:  # Cycle through the different functions
@@ -116,8 +87,8 @@ class FX():
                         try:
                             f(t)  # Try to perform the function
                             s = True  # This will only happen if the function was successful
-                        except:
-                            pass  # Keep trying...
+                        except Exception as e:
+                            sleep(5)
 
         def monitor():
             # Get a stock to watch
@@ -145,3 +116,6 @@ class FX():
             # Get the users desired task and send it to the command loop which will call the right function
             r = input('X: ')
             fx.command_loop(r)
+
+if __name__ == '__main__':
+    FX.UI()
