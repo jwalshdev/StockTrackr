@@ -1,0 +1,16 @@
+Metadata-Version: 2.1
+Name: StockTrackr
+Version: 0.0.2
+Summary: A basic stock data puller/monitor
+Home-page: https://github.com/jwalshdev/StockTrackr
+Author: Jack Walsh
+Author-email: jwalshdev@gmail.com
+License: UNKNOWN
+Description: # StockTrackr
+        
+        This is a basic application that uses alpha_vantages API to pull stock data as well as monitor it real-time.
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
