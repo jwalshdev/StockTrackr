@@ -45,8 +45,8 @@ class Stox:
                 print(f"Now: {datetime.now().time()} | Time: {data['date'].iloc[0]} | Open: {data['open'].iloc[0]} | High: {data['high'].iloc[0]} | Low: {data['low'].iloc[0]} | Close: {data['close'].iloc[0]} | Volume: {data['volume'].iloc[0]}", end='\r', flush=True)
                 sleep(5)  # Wait 5 seconds after returning data
 
-            except KeyError as e1:  # This catches the error that may arise when no data is returned
-                print(e)  # This literally means "do nothing"
+            except KeyError:  # This catches the error that may arise when no data is returned
+                pass  # This literally means "do nothing"
             except KeyboardInterrupt:  # This catches when you use Command+C to escape the monitor
                 print('Exiting monitoring...')
                 return  # Exit the monitor function
