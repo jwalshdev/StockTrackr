@@ -10,7 +10,6 @@ try:
     import pandas as pd
 except ImportError: # If packages don't exist, install them
     os.system('pip install alpha_vantage pandas datetime')
-    from alpha_vantage.timeseries import TimeSeries
     from datetime import datetime
     from time import sleep
     import pandas as pd
