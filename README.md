@@ -18,6 +18,6 @@ Use the Stox() class to gain access to all methods
 
 >stox = StockTrackr.Stox()
 
-The UI() method provides an easy-to-use, text-based entry point to run the program
+The UI() method provides an easy-to-use, command-line entry point to run the program
 
 >fx.UI()
