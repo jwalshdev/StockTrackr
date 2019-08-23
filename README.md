@@ -12,12 +12,12 @@ You can use pip to download the package directly:
 
 ### Usage
 
-Use the FX() class to gain access to all methods
+Use the Stox() class to gain access to all methods
 
 >import StockTrackr
 
->fx = StockTrackr.FX()
+>stox = StockTrackr.Stox()
 
-The UI() method provides an easy-to-use, text-based entry point to run the program
+The UI() method provides an easy-to-use, command-line entry point to run the program
 
 >fx.UI()

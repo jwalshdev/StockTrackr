@@ -1,6 +1,9 @@
 # This package handles a lot of stuff that your operating system normally would (creating directories)
 import os
-from av_api import get_intraday_data, get_daily_data, get_monthly_data, get_weekly_data
+try:
+    from .av_api import get_intraday_data, get_daily_data, get_monthly_data, get_weekly_data
+except:
+    from av_api import get_intraday_data, get_daily_data, get_monthly_data, get_weekly_data
 try:
     # This allows graphing
     import matplotlib.pyplot as plt
@@ -22,7 +25,7 @@ except ImportError: # If packages don't exist, install them
     import matplotlib.dates as mdates
 
 
-class FX:
+class Stox:
     def __init__(self):
         # Create all of the directories for .csv (Excel) files to be saved
         if not os.path.exists('./graphs'):
@@ -53,6 +56,7 @@ class FX:
 
             except KeyError as e1:  # This catches the error that may arise when no data is returned
                 print(e1)  # This literally means "do nothing"
+
             except KeyboardInterrupt:  # This catches when you use Command+C to escape the monitor
                 print('Exiting monitoring...')
                 return  # Exit the monitor function
@@ -97,7 +101,7 @@ class FX:
 
     @staticmethod
     def UI():  # This isn't important but it basically just says "run this"
-        fx = FX()
+        stox = Stox()
         while True:  # Always continue running
 
             # Print 2 rows of lines to separate previous printed stuff
@@ -112,7 +116,7 @@ class FX:
 
             # Get the users desired task and send it to the command loop which will call the right function
             r = input('X: ')
-            fx.command_loop(r)
+            stox.command_loop(r)
 
 if __name__ == '__main__':
-    FX.UI()
+    Stox.UI()
