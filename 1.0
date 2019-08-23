@@ -1,0 +1,6 @@
+Requirement already satisfied: Flask in c:\users\jack.walsh\projects\av\venv\lib\site-packages (0.12.4)
+Requirement already satisfied: Werkzeug>=0.7 in c:\users\jack.walsh\projects\av\venv\lib\site-packages (from Flask) (0.15.5)
+Requirement already satisfied: Jinja2>=2.4 in c:\users\jack.walsh\projects\av\venv\lib\site-packages (from Flask) (2.10.1)
+Requirement already satisfied: itsdangerous>=0.21 in c:\users\jack.walsh\projects\av\venv\lib\site-packages (from Flask) (1.1.0)
+Requirement already satisfied: click>=2.0 in c:\users\jack.walsh\projects\av\venv\lib\site-packages (from Flask) (6.7)
+Requirement already satisfied: MarkupSafe>=0.23 in c:\users\jack.walsh\projects\av\venv\lib\site-packages (from Jinja2>=2.4->Flask) (1.1.1)
