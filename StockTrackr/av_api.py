@@ -3,7 +3,12 @@ import pandas as pd
 import json
 from datetime import datetime
 import os
+import sqlite3
 
+cwd = os.getcwd()
+print(cwd+'/data/db/stocks.db')
+con = sqlite3.connect(cwd+'\data\db\stocks.db')
+c = con.cursor()
 if os.path.exists('my_key'):
     with open('my_key') as f:
         key = f.read()
@@ -20,11 +25,17 @@ columns = ['date','open', 'high', 'low', 'close', 'volume']
 def get_intraday_data(symbol, interval='1min', key=my_key, mode='save'):
     response = requests.get(f'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol}&interval={interval}&apikey={key}')
     data = json.loads(response.text)
-    data = pd.DataFrame.from_dict(data[f'Time Series ({interval})'], orient='index')
+    try:
+        data = pd.DataFrame.from_dict(data[f'Time Series ({interval})'], orient='index')
+    except:
+        print(data)
     data.reset_index(inplace=True)
     data.columns = columns
+    data['symbol'] = symbol
+    data[['open', 'high', 'low', 'close', 'volume']] = data[['open', 'high', 'low', 'close', 'volume']].astype(float)
     if mode == 'save':
-        data.to_csv(f'./data/intra/{symbol}_{datetime.today().date()}.csv', index=False)
+        c.execute(f"DELETE FROM intraday WHERE symbol='{symbol}'")
+        data.to_sql(f'intraday', con, if_exists='append')
     else:
         return data
 
@@ -34,7 +45,10 @@ def get_daily_data(symbol, key=my_key):
     data = pd.DataFrame.from_dict(data['Time Series (Daily)'], orient='index')
     data.reset_index(inplace=True)
     data.columns = columns
-    data.to_csv(f'./data/daily/{symbol}.csv', index=False)
+    data['symbol'] = symbol
+    data[['open', 'high', 'low', 'close', 'volume']] = data[['open', 'high', 'low', 'close', 'volume']].astype(float)
+    c.execute(f"DELETE FROM daily WHERE symbol='{symbol}'")
+    data.to_sql(f'daily', con, if_exists='append')
 
 def get_weekly_data(symbol, key=my_key):
     response = requests.get(f'https://www.alphavantage.co/query?function=TIME_SERIES_WEEKLY&symbol={symbol}&apikey={key}')
@@ -42,7 +56,10 @@ def get_weekly_data(symbol, key=my_key):
     data = pd.DataFrame.from_dict(data['Weekly Time Series'], orient='index')
     data.reset_index(inplace=True)
     data.columns = columns
-    data.to_csv(f'./data/weekly/{symbol}.csv', index=False)
+    data['symbol'] = symbol
+    data[['open', 'high', 'low', 'close', 'volume']] = data[['open', 'high', 'low', 'close', 'volume']].astype(float)
+    c.execute(f"DELETE FROM weekly WHERE symbol='{symbol}'")
+    data.to_sql(f'weekly', con, if_exists='append')
 
 def get_monthly_data(symbol, key=my_key):
     response = requests.get(f'https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol={symbol}&apikey={key}')
@@ -50,4 +67,7 @@ def get_monthly_data(symbol, key=my_key):
     data = pd.DataFrame.from_dict(data['Monthly Time Series'], orient='index')
     data.reset_index(inplace=True)
     data.columns = columns
-    data.to_csv(f'./data/monthly/{symbol}.csv', index=False)
+    data['symbol'] = symbol
+    data[['open', 'high', 'low', 'close', 'volume']] = data[['open', 'high', 'low', 'close', 'volume']].astype(float)
+    c.execute(f"DELETE FROM monthly WHERE symbol='{symbol}'")
+    data.to_sql(f'monthly', con, if_exists='append')

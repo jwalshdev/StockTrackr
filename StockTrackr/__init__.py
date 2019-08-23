@@ -2,24 +2,31 @@
 import os
 from av_api import get_intraday_data, get_daily_data, get_monthly_data, get_weekly_data
 try:
+    # This allows graphing
+    import matplotlib.pyplot as plt
+    import matplotlib.dates as mdates
     # This allows us to work with date objects
     from datetime import datetime
     # Allows us to wait
     from time import sleep
     # Pandas is used for dataframe manipulation
     import pandas as pd
+    
 except ImportError: # If packages don't exist, install them
-    os.system('pip install alpha_vantage pandas datetime')
+    os.system('pip install alpha_vantage pandas datetime matplotlib')
     from alpha_vantage.timeseries import TimeSeries
     from datetime import datetime
     from time import sleep
     import pandas as pd
+    import matplotlib.pyplot as plt
+    import matplotlib.dates as mdates
 
 
 class FX:
     def __init__(self):
-
         # Create all of the directories for .csv (Excel) files to be saved
+        if not os.path.exists('./graphs'):
+            os.makedirs('./graphs')
         if not os.path.exists('./data'):
             os.makedirs('./data')
         if not os.path.exists('./data/daily'):
@@ -30,7 +37,9 @@ class FX:
             os.makedirs('./data/weekly')
         if not os.path.exists('./data/intra'):
             os.makedirs('./data/intra')
-
+        if not os.path.exists('./data/db'):
+            os.makedirs('./data/db')
+            
     def monitor_stock(self, ticker):
         print(f'Beginning monitor of stock {ticker}')
         while True:  # Always continue looping
@@ -43,7 +52,7 @@ class FX:
                 sleep(5)  # Wait 5 seconds after returning data
 
             except KeyError as e1:  # This catches the error that may arise when no data is returned
-                print(e)  # This literally means "do nothing"
+                print(e1)  # This literally means "do nothing"
             except KeyboardInterrupt:  # This catches when you use Command+C to escape the monitor
                 print('Exiting monitoring...')
                 return  # Exit the monitor function
@@ -72,15 +81,19 @@ class FX:
                             f(t)  # Try to perform the function
                             s = True  # This will only happen if the function was successful
                         except Exception as e:
+                            print(e)
                             sleep(5)
 
         def monitor():
             # Get a stock to watch
             tick = input("Enter a ticker to monitor: ")
             self.monitor_stock(tick)
+            
 
         d = {'pull': pull_data, 'monitor': monitor}
         d[response]()  # If response = 'pull' it will run pull_data, as shown above... Same for 'monitor'
+
+    
 
     @staticmethod
     def UI():  # This isn't important but it basically just says "run this"
